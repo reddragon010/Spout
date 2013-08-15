@@ -64,7 +64,7 @@ import org.spout.engine.util.thread.snapshotable.SnapshotableReference;
 import org.spout.engine.world.SpoutChunk;
 import org.spout.engine.world.SpoutRegion;
 
-public class SpoutEntity extends BaseComponentOwner implements Entity, Snapshotable {
+public class SpoutEntity extends BaseComponentOwner implements Entity {
 	public static final int NOTSPAWNEDID = Integer.MIN_VALUE;
 	private final AtomicInteger id = new AtomicInteger(NOTSPAWNEDID);
 	//Snapshotable fields
@@ -212,7 +212,6 @@ public class SpoutEntity extends BaseComponentOwner implements Entity, Snapshota
 		if (isRemoved()) {
 			return;
 		}
-		this.getNetwork().preSnapshotRun(((SpoutPhysicsComponent) getPhysics()).getTransformLive().copy());
 	}
 
 	@Override
@@ -252,14 +251,6 @@ public class SpoutEntity extends BaseComponentOwner implements Entity, Snapshota
 	@Override
 	public UUID getUID() {
 		return uid;
-	}
-
-	@Override
-	public void copySnapshot() {
-		physics.copySnapshot();
-		snapshotManager.copyAllSnapshots();
-
-		network.copySnapshot();
 	}
 
 	@Override
@@ -308,5 +299,9 @@ public class SpoutEntity extends BaseComponentOwner implements Entity, Snapshota
 				((EntityComponent) component).onInteract(event);
 			}
 		}
+	}
+
+	public SnapshotManager getSnapshotManager() {
+		 return snapshotManager;
 	}
 }

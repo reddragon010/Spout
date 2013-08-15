@@ -249,7 +249,8 @@ public class PlayerNetworkComponent extends NetworkComponent implements Listener
 	 * @param live A copy of the owner's live transform state
 	 */
 	@ServerOnly
-	public void preSnapshot(final Transform live) {
+	@Override
+	public void preSnapshotRun(final Transform live) {
 		if (Spout.getPlatform() != Platform.SERVER || session.get().getState() != Session.State.GAME) {
 			return;
 		}

@@ -180,7 +180,7 @@ public class EntityManager {
 				if (chunk != null) {
 					chunk.onEntityLeave(e);
 				}
-				return;
+				continue;
 			}
 
 			//Track entities w/their chunks, for saving purposes
@@ -214,11 +214,12 @@ public class EntityManager {
 	}
 
 	/**
-	 * Finalizes the manager at the FINALIZERUN tick stage
+	 * Finalizes the manager at the PRESNAPSHOTRUN tick stage
 	 */
 	public void preSnapshotRun() {
+		//We only want to perform network code on the live list of entities
 		for (SpoutEntity e : entities.get().values()) {
-			e.preSnapshotRun();
+			e.getNetwork().preSnapshotRun(((SpoutPhysicsComponent) e.getPhysics()).getTransformLive().copy());
 		}
 	}
 
@@ -227,17 +228,13 @@ public class EntityManager {
 	 */
 	public void copyAllSnapshots() {
 		for (SpoutEntity e : entities.get().values()) {
-			e.copySnapshot();
-		}
-		snapshotManager.copyAllSnapshots();
-
-		// We want one more tick with for the removed Entities
-		// The next tick works with the snapshotted values which contains has all removed entities with idRemoved true
-		for (SpoutEntity e : entities.get().values()) {
-			if (e.isRemoved()) {
-				removeEntity(e);
+			e.getSnapshotManager().copyAllSnapshots();
+			((SpoutPhysicsComponent) e.getPhysics()).copySnapshot();
+			if (!e.isRemoved()) {
+				e.getNetwork().copySnapshot();
 			}
 		}
+		snapshotManager.copyAllSnapshots();
 	}
 
 	/**
@@ -256,20 +253,20 @@ public class EntityManager {
 		if (!(Spout.getPlatform() == Platform.SERVER)) {
 			throw new UnsupportedOperationException("Must be in server mode to sync entities");
 		}
-		for (Entity observed : getAll()) {
-			if (observed.getId() == SpoutEntity.NOTSPAWNEDID) {
+		for (Entity e : entities.get().values()) {
+			if (e.getId() == SpoutEntity.NOTSPAWNEDID) {
 				throw new IllegalStateException("Attempt to sync entity with not spawned id.");
 			}
-			if (observed.getChunk() == null) {
+			if (e.getChunk() == null) {
 				continue;
 			}
 			//Players observing the chunk this entity is in
-			Set<? extends Entity> observers = observed.getChunk().getObservers();
-			syncEntity(observed, observers, false);
+			Set<? extends Entity> observers = e.getChunk().getObservers();
+			syncEntity(e, observers, false);
 
 			//TODO: Why do we need this...?
-			Set<? extends Entity> expiredObservers = ((SpoutChunk) observed.getChunk()).getExpiredObservers();
-			syncEntity(observed, expiredObservers, true);
+			Set<? extends Entity> expiredObservers = ((SpoutChunk) e.getChunk()).getExpiredObservers();
+			syncEntity(e, expiredObservers, true);
 		}
 	}
 
