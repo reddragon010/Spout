@@ -26,12 +26,10 @@
  */
 package org.spout.engine.entity;
 
-import org.spout.api.Client;
 import org.spout.api.Engine;
 import org.spout.api.component.Component;
 import org.spout.api.component.entity.CameraComponent;
 import org.spout.api.geo.discrete.Transform;
-import org.spout.engine.gui.SpoutScreenStack;
 
 /**
  * A subclass of SpoutPlayer with modifications for the client
@@ -41,10 +39,5 @@ public class SpoutClientPlayer extends SpoutPlayer {
 		super(engine, name, transform, viewDistance, null, false, (byte[]) null, (Class<? extends Component>[]) null);
 
 		add(CameraComponent.class);
-	}
-
-	@Override
-	public void sendMessage(String message) {
-		((SpoutScreenStack) ((Client) getEngine()).getScreenStack()).getConsole().addMessage(message);
 	}
 }

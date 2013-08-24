@@ -29,7 +29,7 @@ package org.spout.api;
 import org.spout.api.audio.SoundManager;
 import org.spout.api.entity.Player;
 import org.spout.api.geo.World;
-import org.spout.api.gui.ScreenStack;
+import org.spout.api.guix.ScreenStack;
 import org.spout.api.input.InputManager;
 import org.spout.api.math.Vector2;
 import org.spout.api.protocol.PortBinding;

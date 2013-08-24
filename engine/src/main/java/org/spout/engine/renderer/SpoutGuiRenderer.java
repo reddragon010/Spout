@@ -24,54 +24,13 @@
  * License and see <http://spout.in/licensev1> for the full license, including
  * the MIT license.
  */
-package org.spout.api.component.widget;
+package org.spout.engine.renderer;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.spout.api.guix.GuiRenderer;
+import org.spout.api.guix.ScreenStack;
 
-import org.spout.api.gui.render.RenderPartPack;
-
-/**
- * Represents a {@link WidgetComponent} with multiple {@link RenderPartPack}s.
- */
-public class RenderPartPacksComponent extends WidgetComponent {
-	private final List<RenderPartPack> parts = new ArrayList<>();
-
+public class SpoutGuiRenderer implements GuiRenderer {
 	@Override
-	public List<RenderPartPack> getRenderPartPacks() {
-		return parts;
-	}
-
-	/**
-	 * Adds a render part to the component.
-	 *
-	 * @return size
-	 */
-	public int add(RenderPartPack part) {
-		// Last added on top
-		return add(part, parts.size());
-	}
-
-	/**
-	 * Adds a render part to the component.
-	 *
-	 * @param part to add
-	 * @param zIndex index of part
-	 * @return size
-	 */
-	public int add(RenderPartPack part, int zIndex) {
-		part.setZIndex(zIndex);
-		parts.add(part);
-		return parts.size() - 1;
-	}
-
-	/**
-	 * Returns a part at the specified index
-	 *
-	 * @param index to get part from
-	 * @return part at specified index
-	 */
-	public RenderPartPack get(int index) {
-		return parts.get(index);
+	public void render(ScreenStack stack) {
 	}
 }

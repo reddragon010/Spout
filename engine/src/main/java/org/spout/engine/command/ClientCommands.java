@@ -59,10 +59,4 @@ public class ClientCommands extends CommonCommands {
 		String message = args.popRemainingStrings("message");
 		getEngine().getCommandSource().sendMessage(message);
 	}
-
-	@CommandDescription (aliases = {"clear"}, usage = "[message]", desc = "Clear the client's console")
-	public void consoleClear(CommandSource source, CommandArguments args) throws ArgumentParseException {
-		args.assertCompletelyParsed();
-		getEngine().getScreenStack().getConsole().clearConsole();
-	}
 }

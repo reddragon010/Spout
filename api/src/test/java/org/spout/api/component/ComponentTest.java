@@ -39,7 +39,6 @@ import org.spout.api.component.block.BlockComponent;
 import org.spout.api.component.entity.EntityComponent;
 import org.spout.api.component.entity.NetworkComponent;
 import org.spout.api.component.entity.PhysicsComponent;
-import org.spout.api.component.widget.WidgetComponent;
 import org.spout.api.component.world.WorldComponent;
 import org.spout.api.data.ValueHolder;
 import org.spout.api.datatable.ManagedHashMap;
@@ -50,8 +49,6 @@ import org.spout.api.entity.Player;
 import org.spout.api.entity.spawn.SpawnArrangement;
 import org.spout.api.event.Cause;
 import org.spout.api.event.entity.EntityInteractEvent;
-import org.spout.api.event.player.input.PlayerClickEvent;
-import org.spout.api.event.player.input.PlayerKeyEvent;
 import org.spout.api.generator.WorldGenerator;
 import org.spout.api.generator.biome.Biome;
 import org.spout.api.generator.biome.BiomeManager;
@@ -62,18 +59,11 @@ import org.spout.api.geo.cuboid.Chunk;
 import org.spout.api.geo.cuboid.Region;
 import org.spout.api.geo.discrete.Point;
 import org.spout.api.geo.discrete.Transform;
-import org.spout.api.geo.discrete.Transform2D;
-import org.spout.api.gui.FocusReason;
-import org.spout.api.gui.Screen;
-import org.spout.api.gui.Widget;
-import org.spout.api.gui.render.RenderPartPack;
 import org.spout.api.lighting.LightingManager;
 import org.spout.api.material.BlockMaterial;
 import org.spout.api.material.DynamicUpdateEntry;
 import org.spout.api.material.range.EffectRange;
-import org.spout.api.math.IntVector2;
 import org.spout.api.math.IntVector3;
-import org.spout.api.math.Rectangle;
 import org.spout.api.math.Vector3;
 import org.spout.api.scheduler.TaskManager;
 import org.spout.api.util.cuboid.CuboidBlockMaterialBuffer;
@@ -92,7 +82,6 @@ public final class ComponentTest {
 		//Mock owners
 		BaseComponentOwner base = new BaseComponentOwner();
 		TestEntity entity = new TestEntity();
-		TestWidget widget = new TestWidget();
 		TestWorld world = new TestWorld();
 		BlockComponentOwner block = new BlockComponentOwner(new ManagedHashMap(), 0, 0, 0, world);
 		//Add some components
@@ -103,7 +92,6 @@ public final class ComponentTest {
 		assertNotNull(base.getData());
 		assertNotNull(block.getData());
 		assertNotNull(entity.getData());
-		assertNotNull(widget.getData());
 		assertNotNull(world.getData());
 		//Test block
 		GenericBlockComponent bc = block.add(GenericBlockComponent.class);
@@ -111,9 +99,6 @@ public final class ComponentTest {
 		//Test entity
 		GenericEntityComponent ec = entity.add(GenericEntityComponent.class);
 		assertNotNull(ec);
-		//Test widget
-		GenericWidgetComponent wic = widget.add(GenericWidgetComponent.class);
-		assertNotNull(wic);
 		//Test world
 		GenericWorldComponent woc = world.add(GenericWorldComponent.class);
 		assertNotNull(woc);
@@ -149,11 +134,6 @@ public final class ComponentTest {
 
 	public static class GenericEntityComponent extends EntityComponent {
 		public GenericEntityComponent() {
-		}
-	}
-
-	public static class GenericWidgetComponent extends WidgetComponent {
-		public GenericWidgetComponent() {
 		}
 	}
 
@@ -289,83 +269,6 @@ public final class ComponentTest {
 		@Override
 		public World getWorld() {
 			return null;
-		}
-	}
-
-	public static class TestWidget extends BaseComponentOwner implements Widget {
-		@Override
-		public void update() {
-		}
-
-		@Override
-		public Screen getScreen() {
-			return null;
-		}
-
-		@Override
-		public void setScreen(Screen screen) {
-		}
-
-		@Override
-		public Transform2D getTransform() {
-			return null;
-		}
-
-		@Override
-		public Rectangle getBounds() {
-			return null;
-		}
-
-		@Override
-		public void setBounds(Rectangle bounds) {
-		}
-
-		@Override
-		public boolean canFocus() {
-			return false;
-		}
-
-		@Override
-		public boolean isFocused() {
-			return false;
-		}
-
-		@Override
-		public void onFocus(FocusReason reason) {
-		}
-
-		@Override
-		public void onBlur() {
-		}
-
-		@Override
-		public void onClick(PlayerClickEvent event) {
-		}
-
-		@Override
-		public void onKey(PlayerKeyEvent event) {
-		}
-
-		@Override
-		public void onMouseMoved(IntVector2 prev, IntVector2 pos, boolean hovered) {
-		}
-
-		@Override
-		public List<RenderPartPack> getRenderPartPacks() {
-			return null;
-		}
-
-		@Override
-		public void onTick(float dt) {
-		}
-
-		@Override
-		public boolean canTick() {
-			return false;
-		}
-
-		@Override
-		public void tick(float dt) {
 		}
 	}
 
